@@ -31,7 +31,7 @@ public class Repack extends AbstractMojo {
     private String lifecyclePhase;
 
     @Parameter(defaultValue = "${project.build.outputDirectory}", readonly = true)
-    private String projectOutputirectory;
+    private String projectOutputDirectory;
 
 
     @Override
@@ -51,7 +51,7 @@ public class Repack extends AbstractMojo {
             return;
         }
         for (Resource resource : resources) {
-            this.getLog().info(new StringBuilder("process resource ").append(resource.getFileType()).append(" filePath ").append(resource.getFilePath()));
+            this.getLog().info(new StringBuilder("process resource : ").append(resource.getFileType()).append(" filePath :").append(resource.getFilePath()));
             repackResource(resource);
         }
     }
@@ -65,9 +65,9 @@ public class Repack extends AbstractMojo {
         }
         // 如果不指定文件处理范围,默认读取全部文件
         if (resource.getFilePath() == null || resource.getFilePath().isBlank()) {
-            resource.setFilePath(projectOutputirectory);
+            resource.setFilePath(projectOutputDirectory);
         } else {
-            resource.setFilePath(StringUtils.join(projectOutputirectory, resource.getFilePath()));
+            resource.setFilePath(StringUtils.join(projectOutputDirectory, resource.getFilePath()));
         }
         // 默认重新打包方式为md5
         if (resource.getRepackStage() == null || resource.getRepackStage().isBlank()) {
@@ -80,7 +80,7 @@ public class Repack extends AbstractMojo {
         // 处理文件
         File file = new File(resource.getFilePath());
         repackFile(file, resource, replaceMap);
-        this.getLog().info("replace map :");
+        this.getLog().info("repack fileMap :");
         this.getLog().info(replaceMap.toString());
 
         // 替换链接
@@ -96,7 +96,7 @@ public class Repack extends AbstractMojo {
             return;
         }
         for (String replacePath : resource.getReplaceLinkFilePaths()) {
-            File file = new File(StringUtils.join(projectOutputirectory, replacePath));
+            File file = new File(StringUtils.join(projectOutputDirectory, replacePath));
             try {
                 // 替换文件内容中的链接
                 repaceFileLink(file, replaceMap);
@@ -148,8 +148,8 @@ public class Repack extends AbstractMojo {
             getLog().info(resource.getRepackStage());
             if ("md5".equalsIgnoreCase(resource.getRepackStage())) {
                 String md5FileName = FileUtil.getFileMD5String(file);
-                dest = new File(StringUtils.join(file.getAbsolutePath(), "?m=", md5FileName));
-                replaceMap.put(StringUtils.substringAfter(file.getAbsolutePath(), projectOutputirectory), StringUtils.substringAfter(dest.getAbsolutePath(), projectOutputirectory));
+                dest = new File(StringUtils.join(file.getAbsolutePath(), "?m=", md5FileName, ".", StringUtils.substringAfterLast(file.getAbsolutePath(), ".")));
+                replaceMap.put(StringUtils.substringAfter(file.getAbsolutePath(), projectOutputDirectory), StringUtils.substringAfter(dest.getAbsolutePath(), projectOutputDirectory));
                 file.renameTo(dest);
             }
         } catch (Exception e) {
