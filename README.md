@@ -44,7 +44,8 @@
 
 运行 mvn clean install 运行结果：
 ```
-[INFO] process resource js filePath null
+[INFO] --- resources-repack:1.0-SNAPSHOT:repack (default) @ resources-repack ---
+[INFO] process resource : js filePath :null
 [INFO] md5
 [INFO] repack fileMap :
 [INFO] {/js/repack.js=/js/repack.js?m=57165343D7761164}
