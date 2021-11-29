@@ -1,10 +1,10 @@
 # mvnrepack
 ## what is this？
-一个maven打包插件，可以将编译好的文件的文件名打包为`<filename？m=md5`字符转的形式. 
+一个maven打包插件，可以将编译好的文件的文件名打包为`filename？m=md5`字符转的形式. 
 打包后可以将引用该文件的地方替换为引用打包好的新文件
 ## quickstart
 首先引入插件
-'''java
+```java
 <build>
         <plugins>
             <plugin>
@@ -40,7 +40,7 @@
             </plugin>
         </plugins>
     </build>
-'''
+```
 
 运行 mvn clean install 运行结果：
 [INFO] process resource js filePath null
